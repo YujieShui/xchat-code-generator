@@ -1,6 +1,6 @@
 package com.shuiyujie.generator.test;
 
-import com.shuiyujie.generator.utils.Contexts;
+import com.shuiyujie.generator.utils.Constants;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
@@ -23,7 +23,7 @@ public class HtmlGeneratorClient {
         try {
             Configuration configuration = new Configuration();
             // 指定模板数据源
-            configuration.setDirectoryForTemplateLoading(new File(Contexts.TEMPLATE_PATH));
+            configuration.setDirectoryForTemplateLoading(new File(Constants.TEMPLATE_PATH));
             configuration.setObjectWrapper(new DefaultObjectWrapper());
 
             // 获取创建的模板
