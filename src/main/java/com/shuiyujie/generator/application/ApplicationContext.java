@@ -10,7 +10,7 @@ public abstract class ApplicationContext {
 
     Map<String,Object> contexts = new HashMap<>();
 
-    abstract void setAttribute();
+    public abstract void setAttribute(String key,Object value);
 
-    abstract void getAttritube();
+    public abstract Object getAttritube(String key);
 }

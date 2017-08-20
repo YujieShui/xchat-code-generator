@@ -1,9 +1,10 @@
 package com.shuiyujie.generator.task;
 
 
+import com.shuiyujie.generator.application.ApplicationContext;
+import com.shuiyujie.generator.application.ApplicationTask;
 import com.shuiyujie.generator.model.ColumnInfo;
 import com.shuiyujie.generator.model.TableInfo;
-import com.shuiyujie.generator.utils.Constants;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -19,13 +20,19 @@ import static com.shuiyujie.generator.utils.DBUtil.getConnection;
 /**
  * created by shui 2017/8/19
  */
-public class InitTask {
+public class InitTask extends ApplicationTask{
+
+    Map<String,Object> contexts = new HashMap<>();
 
     Connection conn = null;
     ResultSet tableSet = null;// 表信息
     ResultSet columnSet = null;// 字段信息
 
-    protected boolean doInternale() {
+    public InitTask(){
+        this.init();
+    }
+
+    protected boolean init() {
 
         try {
             conn = getConnection();
@@ -57,11 +64,6 @@ public class InitTask {
                 String tableType = tableSet.getString("TABLE_TYPE");
                 tableInfo.setType(tableType);
 
-
-                System.out.println("tableNamez:" + tableName);
-                System.out.println("tableRemark:" + tableRemark);
-                System.out.println("tableType:" + tableType);
-
                 // 获取表字段结果集
                 columnSet = dbMetaData.getColumns(null,null,tableName,null);
                 List<ColumnInfo> columnInfos = new ArrayList<>();
@@ -82,6 +84,9 @@ public class InitTask {
                     columnInfos.add(ci);
                 }
                 tableInfo.setColumnList(columnInfos);
+
+                // 表信息放入上下文中
+                contexts.put("tableInfo",tableInfo);
             }
 
 
@@ -90,10 +95,6 @@ public class InitTask {
         }
 
         return false;
-    }
-
-    public static void main(String[] args) {
-        new InitTask().doInternale();
     }
 
 }
