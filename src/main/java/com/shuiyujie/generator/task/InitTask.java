@@ -36,7 +36,8 @@ public class InitTask {
             DatabaseMetaData dbMetaData = conn.getMetaData();
 
             // 获取数据库表结果集
-            tableSet = dbMetaData.getTables(null, "root", Constants.ENTITY_SUFFIX, new String[]{"TABLE"});
+//            tableSet = dbMetaData.getTables(null, "user", Constants.ENTITY_SUFFIX, new String[]{"TABLE"});
+            tableSet = dbMetaData.getTables(null, null,"%", null);
 
             // 遍历
             Map<String, TableInfo> tableInfoMap = new HashMap<>();
@@ -62,7 +63,7 @@ public class InitTask {
                 System.out.println("tableType:" + tableType);
 
                 // 获取表字段结果集
-                columnSet = dbMetaData.getColumns(null,"root",tableName,Constants.ENTITY_SUFFIX);
+                columnSet = dbMetaData.getColumns(null,null,tableName,null);
                 List<ColumnInfo> columnInfos = new ArrayList<>();
                 while (columnSet.next()){
                     String columnName = columnSet.getString("COLUMN_NAME").toLowerCase();
@@ -73,6 +74,10 @@ public class InitTask {
                     ci.setName(columnName);
                     ci.setType(columnType);
                     ci.setRemark(columnRemark);
+
+                    System.out.println(ci.getName());
+                    System.out.println(ci.getType());
+                    System.out.println(ci.getRemark());
 
                     columnInfos.add(ci);
                 }
