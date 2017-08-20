@@ -19,13 +19,6 @@ public class VO extends TableInfo {
 
     private String superclass; // 父类名
 
-    /*
-     * 将TableInfor中的字段名称格式化后存储
-     * eg： org_id --> orgId
-     *      varchar --> String
-      */
-    private List<ColumnInfo> columnList;
-
     public String getPackageName() {
         return packageName;
     }
@@ -50,13 +43,4 @@ public class VO extends TableInfo {
         this.superclass = superclass;
     }
 
-    @Override
-    public List<ColumnInfo> getColumnList() {
-        return columnList;
-    }
-
-    @Override
-    public void setColumnList(List<ColumnInfo> columnList) {
-        this.columnList = columnList;
-    }
 }

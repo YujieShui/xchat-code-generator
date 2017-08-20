@@ -11,7 +11,8 @@ public class TableInfo {
     private String name;
     private String type;
     private String remark;
-    private List<ColumnInfo> columnList;
+    private List<ColumnInfo> dbColumnList;
+    private List<ColumnInfo> classColumnList;
 
     public String getName() {
         return name;
@@ -37,16 +38,30 @@ public class TableInfo {
         this.remark = remark;
     }
 
-    public List<ColumnInfo> getColumnList() {
-        return columnList;
+    public List<ColumnInfo> getDbColumnList() {
+        return dbColumnList;
     }
 
-    public void setColumnList(List<ColumnInfo> columnList) {
-        this.columnList = columnList;
+    public void setDbColumnList(List<ColumnInfo> dbColumnList) {
+        this.dbColumnList = dbColumnList;
+    }
+
+    public List<ColumnInfo> getClassColumnList() {
+        return classColumnList;
+    }
+
+    public void setClassColumnList(List<ColumnInfo> classColumnList) {
+        this.classColumnList = classColumnList;
     }
 
     @Override
     public String toString() {
-        return "TableInfo [name=" + name + ", type=" + type + ", remark=" + remark + ", columnList=" + columnList + "]";
+        return "TableInfo{" +
+                "name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", remark='" + remark + '\'' +
+                ", dbColumnList=" + dbColumnList +
+                ", classColumnList=" + classColumnList +
+                '}';
     }
 }

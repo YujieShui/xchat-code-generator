@@ -10,6 +10,7 @@ import com.shuiyujie.generator.test.Property;
 import com.shuiyujie.generator.test.PropertyType;
 import com.shuiyujie.generator.utils.Constants;
 import com.shuiyujie.generator.utils.FileUtil;
+import com.shuiyujie.generator.utils.StringUtil;
 import com.sun.tools.jdi.VoidValueImpl;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
@@ -28,7 +29,9 @@ import java.util.Map;
  */
 public class VOTask extends InitTask {
 
-    private static File javaFile = null;
+    private static String VO_PACKAGE_NAME = "com.x16.xchat.persist.org";
+
+    private static String VO_SUPERCLASS_NAME = "XcVO";
 
     public boolean doInternale() throws Exception{
 
@@ -46,28 +49,8 @@ public class VOTask extends InitTask {
 
             // 创建数据模型
             Map<String, Object> root = new HashMap<>();
-            root.put("vo",tableInfo);
-
-
-            File outDirFile = new File("./src-template");
-            if(!outDirFile.exists()){
-                outDirFile.mkdir();
-            }
-            javaFile = toJavaFilename(outDirFile, "com.shuiyujie", tableInfo.getName());
-
-            // 步骤四：合并 模板 和 数据模型
-            // 创建.java类文件
-            if(javaFile != null){
-                Writer javaWriter = new FileWriter(javaFile);
-                template.process(root, javaWriter);
-                javaWriter.flush();
-                System.out.println("文件生成路径：" + javaFile.getCanonicalPath());
-
-                javaWriter.close();
-            }
-            // 输出到Console控制台
-//            Writer out = new OutputStreamWriter(System.out);
-//            OutputStream os = new FileOutputStream("C:/java/hello");
+            VO vo = this.tableInfo2VO(tableInfo);
+            root.put("vo",vo);
 
             Writer out = new BufferedWriter(new OutputStreamWriter(
                     new FileOutputStream("/Users/shui/workspace/code/user.java"), "utf-8"));
@@ -84,23 +67,18 @@ public class VOTask extends InitTask {
         return false;
     }
 
+    public VO tableInfo2VO (TableInfo tableInfo){
 
+        VO vo = new VO();
 
-    /**
-     * 创建.java文件所在路径 和 返回.java文件File对象
-     * @param outDirFile 生成文件路径
-     * @param javaPackage java包名
-     * @param javaClassName java类名
-     * @return
-     */
-    private static File toJavaFilename(File outDirFile, String javaPackage, String javaClassName) {
-        String packageSubPath = javaPackage.replace('.', '/');
-        File packagePath = new File(outDirFile, packageSubPath);
-        File file = new File(packagePath, javaClassName + ".java");
-        if(!packagePath.exists()){
-            packagePath.mkdirs();
-        }
-        return file;
+        vo.setPackageName(VO_PACKAGE_NAME);
+        vo.setClassName(StringUtil.tableName2ClassName(tableInfo.getName()));
+        vo.setSuperclass(VO_SUPERCLASS_NAME);
+        List<ColumnInfo> classColumns= (List<ColumnInfo>) contexts.get("classColumns");
+        vo.setClassColumnList(classColumns);
+
+        return vo;
+
     }
 
     public static void main(String[] args) throws Exception {

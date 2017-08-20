@@ -5,6 +5,7 @@ import com.shuiyujie.generator.application.ApplicationContext;
 import com.shuiyujie.generator.application.ApplicationTask;
 import com.shuiyujie.generator.model.ColumnInfo;
 import com.shuiyujie.generator.model.TableInfo;
+import com.shuiyujie.generator.utils.StringUtil;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -83,9 +84,11 @@ public class InitTask extends ApplicationTask{
 
                     columnInfos.add(ci);
                 }
-                tableInfo.setColumnList(columnInfos);
+                tableInfo.setDbColumnList(columnInfos);
+                this.dbColumn2classColumn(columnInfos);
 
                 // 表信息放入上下文中
+                contexts.put("dbColumns",columnInfos);
                 contexts.put("tableInfo",tableInfo);
             }
 
@@ -95,6 +98,29 @@ public class InitTask extends ApplicationTask{
         }
 
         return false;
+    }
+
+    /**
+     * 数据库表字段转换成驼峰法命名
+     * @param columnInfos 数据库表字段 user_id
+     */
+    private void dbColumn2classColumn(List<ColumnInfo > columnInfos){
+
+        // 驼峰法命名字段
+        List<ColumnInfo> classColumns = new ArrayList<>();
+
+        for (ColumnInfo columnInfo : columnInfos) {
+            ColumnInfo classColumn = new ColumnInfo();
+            classColumn.setName(StringUtil.dbColumn2ClassColumn(columnInfo.getName()));
+            classColumn.setType(StringUtil.typeTransfer(columnInfo.getType()));// type 需要转换
+            classColumn.setRemark(columnInfo.getRemark());
+            classColumn.setLen(columnInfo.getLen());
+            classColumn.setPrecision(classColumn.getPrecision());
+
+            classColumns.add(classColumn);
+        }
+
+        contexts.put("classColumns",classColumns);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.shuiyujie.generator.utils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ public class StringUtil {
 
     /**
      * 判断字符串是否为空
+     *
      * @param str
      * @return
      */
@@ -24,6 +26,7 @@ public class StringUtil {
 
     /**
      * 字符串首字母转换成大写
+     *
      * @param str
      * @return
      */
@@ -38,9 +41,9 @@ public class StringUtil {
     }
 
     /**
-     *
      * 将字符串拆分为list
      * 数据字段根据 "_" 分割
+     *
      * @param str
      * @param regex
      * @return
@@ -57,16 +60,17 @@ public class StringUtil {
     /**
      * 数据库字段转换成驼峰法命名的字段
      * eg: org_id --> orgId
+     *
      * @param list
      * @return
      */
-    public static String str2Column(List<String> list){
+    public static String str2Column(List<String> list) {
         String str = "";
 
         for (int i = 0; i < list.size(); i++) {
-            if(i > 0){
+            if (i > 0) {
                 str += upcaseFirst(list.get(i));
-            }else {
+            } else {
                 str += list.get(i);
             }
         }
@@ -74,17 +78,67 @@ public class StringUtil {
         return str;
     }
 
+    /**
+     * 数据库名转换成类名,首字母大写
+     * xc_user --> XcUser
+     *
+     * @param tableName
+     * @return
+     */
+    public static String tableName2ClassName(String tableName) {
+
+        return upcaseFirst(str2Column(splitStr2List(tableName, "_")));
+
+    }
+
+    /**
+     * 数据库字段名转换成Java属性名,首字母小写
+     * user_id --> userId
+     *
+     * @param
+     * @return
+     */
+    public static String dbColumn2ClassColumn(String column) {
+
+        return str2Column(splitStr2List(column, "_"));
+
+    }
+
+    /**
+     * 数据库类型转换java类型
+     *
+     * @param type
+     * @return
+     */
+    public static String typeTransfer(String type) {
+
+        if (type.equals("int")) {
+            return "Long";
+        } else if (type.equals("tinyint")) {
+            return "Integer";
+        } else if (type.equals("varchar")) {
+            return "String";
+        } else if (type.equals("datetime")) {
+            return "Date";
+        } else if (type.equals("bigint")) {
+            return "Long";
+        } else {
+            return type;
+        }
+
+    }
+
     public static void main(String[] args) {
         String str = "userVO";
         System.out.println(upcaseFirst(str));
 
         String str2 = "user_org_id";
-        List<String> list = splitStr2List(str2,"_");
-        System.out.println(splitStr2List(str2,"_"));
-        
+        List<String> list = splitStr2List(str2, "_");
+        System.out.println(splitStr2List(str2, "_"));
+
         String str3 = str2Column(list);
         System.out.println(str3);
-        
+
     }
 
 }

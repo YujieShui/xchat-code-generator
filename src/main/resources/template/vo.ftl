@@ -5,14 +5,14 @@ import com.x16.xchat.persist.XcVO;
 * VO 实体类
 * created by shui
 */
-public class ${vo.className} extends XcVO{
+public class ${vo.className} <#if vo.superclass?has_content> extends ${vo.superclass} </#if>{
 
-    <#list vo.columnList as vo>
-    private ${vo.type} ${vo.name};
+    <#list vo.classColumnList as column>
+    private ${column.type} ${column.name};
 
     </#list>
 
-    <#list vo.columnList as column>
+    <#list vo.classColumnList as column>
     public ${column.type} get${column.name?cap_first}() {
         return ${column.name};
     }
