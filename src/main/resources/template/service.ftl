@@ -1,26 +1,26 @@
-package ${packageStr};
+package ${idao.packageName};
 
 import com.value.mybatis.IDaoRouter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class I${idao.className} implements I${idao.className} {
+public class ${idao.className} implements I${idao.className} {
 
     void insert${idao.className}(${idao.className}VO vo){
-        daoRouter.insert("${entityClassName?cap_first}.insert${entityName}", ${entityClassName});
+        daoRouter.insert("${idao.className}.insert${idao.className}", vo);
     }
 
     void update${idao.className}(${idao.className}VO vo){
-        daoRouter.update("${entityClassName?cap_first}.update${entityName}", ${entityClassName});
+        daoRouter.update("${idao.className}.${idao.className}", vo);
     }
 
     void delete${idao.className}(${idao.className}VO vo){
-        daoRouter.update("${entityClassName?cap_first}.update${entityName}", ${entityClassName});
+        daoRouter.update("${idao.className}.delete${idao.className}", vo);
     }
 
     List<${idao.className}VO> load${idao.className}(Map<String, Object> params){
-        return daoRouter.query("${entityClassName?cap_first}.load${entityName}",params);
+        return daoRouter.query("${idao.className}.load${idao.className}",params);
     }
 
     @Autowired
