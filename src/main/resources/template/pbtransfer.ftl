@@ -1,8 +1,8 @@
-public static final String[] ORG_CUSTOMER_FIELDS = new String[]{
+public static final String[] ${paramName} = new String[]{
 
-<#list vo.columnList as column>
-    "${column.name}",
-    // 修改成最后一个没有逗号
+<#list columnList as column>
+    <#if (column_has_next)>"${column.name}",
+    <#else>"${column.name}"
+    </#if>
 </#list>
-
 };
