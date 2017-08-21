@@ -1,6 +1,6 @@
 package com.shuiyujie.generator.utils;
 
-import com.shuiyujie.generator.source.Configuration;
+import com.shuiyujie.generator.source.MyConfiguration;
 
 import java.sql.*;
 
@@ -12,7 +12,7 @@ public class DBUtil {
 
     static {
         try {
-            Class.forName(Configuration.getString("driverClassName"));
+            Class.forName(MyConfiguration.getString("driverClassName"));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -25,9 +25,9 @@ public class DBUtil {
     public static Connection getConnection(){
         Connection conn = null;
         try {
-            String jdbcUrl = Configuration.getString("url");
-            String userName = Configuration.getString("username");
-            String password = Configuration.getString("password");
+            String jdbcUrl = MyConfiguration.getString("url");
+            String userName = MyConfiguration.getString("username");
+            String password = MyConfiguration.getString("password");
             conn = DriverManager.getConnection(jdbcUrl, userName, password);
         } catch (SQLException e) {
             e.printStackTrace();

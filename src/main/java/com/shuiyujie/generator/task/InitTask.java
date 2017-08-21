@@ -5,8 +5,13 @@ import com.shuiyujie.generator.application.ApplicationContext;
 import com.shuiyujie.generator.application.ApplicationTask;
 import com.shuiyujie.generator.model.ColumnInfo;
 import com.shuiyujie.generator.model.TableInfo;
+import com.shuiyujie.generator.utils.Constants;
 import com.shuiyujie.generator.utils.StringUtil;
+import freemarker.template.Configuration;
+import freemarker.template.DefaultObjectWrapper;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -25,12 +30,15 @@ public class InitTask extends ApplicationTask{
 
     Map<String,Object> contexts = new HashMap<>();
 
+    public static Configuration configuration;
+
     Connection conn = null;
     ResultSet tableSet = null;// 表信息
     ResultSet columnSet = null;// 字段信息
 
     public InitTask(){
         this.init();
+        this.initConfiguration();
     }
 
     protected boolean init() {
@@ -98,6 +106,21 @@ public class InitTask extends ApplicationTask{
         }
 
         return false;
+    }
+
+    /**
+     * 初始化 FreeMraker Configuration
+     */
+    private void initConfiguration (){
+
+        this.configuration = new Configuration();
+        try {
+            // 指定数据源
+            this.configuration.setDirectoryForTemplateLoading(new File(Constants.TEMPLATE_PATH));
+            this.configuration.setObjectWrapper(new DefaultObjectWrapper());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

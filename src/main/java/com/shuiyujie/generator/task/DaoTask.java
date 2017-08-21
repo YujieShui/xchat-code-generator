@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class DaoTask extends InitTask {
 
-    private String FTL_NAME = "service.ftl";
+    private String FTL_NAME = "iservice.ftl";
 
     private String PACKAGE_NAME = "com.x16.xchat.app.service";
 
@@ -40,7 +40,7 @@ public class DaoTask extends InitTask {
             IDaoModel model = this.getInstance();
             root.put("idao", model);
             Writer out = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream("/Users/shui/workspace/code/UserService.java"), "utf-8"));
+                    new FileOutputStream("/Users/shui/workspace/code/IUserService.java"), "utf-8"));
             template.process(root, out);
             out.flush();
             out.close();

@@ -12,7 +12,7 @@ import java.util.Set;
  * 获取数据库中指定表的信息
  * created by shui 2017/8/19
  */
-public class Configuration {
+public class MyConfiguration {
 
     private static Map<String,String> items = new HashMap<>();
 
