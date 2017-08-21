@@ -24,6 +24,8 @@ public class VOTask extends InitTask {
 
     private static String VO_SUPERCLASS_NAME = "XcVO";
 
+    private static String TASK_FTL_NAME = "vo.ftl";
+
     public boolean doInternale() throws Exception{
 
         TableInfo tableInfo = (TableInfo) contexts.get("tableInfo");
@@ -36,7 +38,7 @@ public class VOTask extends InitTask {
             configuration.setObjectWrapper(new DefaultObjectWrapper());
 
             // 指定模板文件
-            Template template = configuration.getTemplate("vo.ftl");
+            Template template = configuration.getTemplate(TASK_FTL_NAME);
 
             // 创建数据模型
             Map<String, Object> root = new HashMap<>();
@@ -44,7 +46,7 @@ public class VOTask extends InitTask {
             root.put("vo",vo);
 
             Writer out = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream("/Users/shui/workspace/code/User.java"), "utf-8"));
+                    new FileOutputStream("/Users/shui/workspace/code/UserVO.java"), "utf-8"));
             template.process(root, out);
             out.flush();
             out.close();

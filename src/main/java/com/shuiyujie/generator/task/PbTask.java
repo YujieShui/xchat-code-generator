@@ -22,6 +22,8 @@ public class PbTask extends InitTask{
 
     private static String PB_PACKAGE_NAME = "com.x16.xchat.protobuf.proto";
 
+    private static String TASK_FTL_NAME = "protobuf.ftl";
+
     public boolean doInternale() throws Exception{
 
         TableInfo tableInfo = (TableInfo) contexts.get("tableInfo");
@@ -34,7 +36,7 @@ public class PbTask extends InitTask{
             configuration.setObjectWrapper(new DefaultObjectWrapper());
 
             // 指定模板文件
-            Template template = configuration.getTemplate("protobuf.ftl");
+            Template template = configuration.getTemplate(TASK_FTL_NAME);
 
             // 创建数据模型
             Map<String, Object> root = new HashMap<>();
