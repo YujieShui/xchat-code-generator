@@ -86,6 +86,7 @@ public class InitTask extends ApplicationTask{
                 }
                 tableInfo.setDbColumnList(columnInfos);
                 this.dbColumn2classColumn(columnInfos);
+                this.dbColumn2PbColumn(columnInfos);
 
                 // 表信息放入上下文中
                 contexts.put("dbColumns",columnInfos);
@@ -101,7 +102,7 @@ public class InitTask extends ApplicationTask{
     }
 
     /**
-     * 数据库表字段转换成驼峰法命名
+     * 数据库表字段转换成驼峰法命名Java变量名
      * @param columnInfos 数据库表字段 user_id
      */
     private void dbColumn2classColumn(List<ColumnInfo > columnInfos){
@@ -121,6 +122,28 @@ public class InitTask extends ApplicationTask{
         }
 
         contexts.put("classColumns",classColumns);
+    }
+
+    /**
+     * 数据库字段转换成pb中类型
+     * @param columnInfos
+     */
+    private void dbColumn2PbColumn(List<ColumnInfo > columnInfos){
+
+        List<ColumnInfo> pbColumns = new ArrayList<>();
+
+        for (ColumnInfo columnInfo : columnInfos) {
+            ColumnInfo classColumn = new ColumnInfo();
+            classColumn.setName(StringUtil.dbColumn2ClassColumn(columnInfo.getName()));
+            classColumn.setType(StringUtil.typeTransfer4Pb(columnInfo.getType()));// type 需要转换
+            classColumn.setRemark(columnInfo.getRemark());
+            classColumn.setLen(columnInfo.getLen());
+            classColumn.setPrecision(classColumn.getPrecision());
+
+            pbColumns.add(classColumn);
+        }
+
+        contexts.put("pbColumns",pbColumns);
     }
 
 }

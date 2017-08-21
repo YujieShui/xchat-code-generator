@@ -1,21 +1,17 @@
 package com.shuiyujie.generator.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * created by shui 2017/8/20
  */
 public class Protobuf extends TableInfo{
 
-    // ColumnInfo to PbInfor
-    private List<PbInfo> pbInfoList;
+    private String className;// 实体类名
 
-    public List<PbInfo> getPbInfoList() {
-        return pbInfoList;
+    public String getClassName() {
+        return className;
     }
 
-    public void setPbInfoList(List<PbInfo> pbInfoList) {
-        this.pbInfoList = pbInfoList;
+    public void setClassName(String className) {
+        this.className = className;
     }
 }

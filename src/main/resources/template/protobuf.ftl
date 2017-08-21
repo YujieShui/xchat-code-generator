@@ -1,23 +1,17 @@
-package ${protobuf.name};
+package ${protobuf.packageName};
 
-option java_package = "${protobuf.name}";
+option java_package = "${protobuf.packageName}";
 
-option java_outer_classname = "${protobuf.proName?cap_first}Proto";
+option java_outer_classname = "${protobuf.name?cap_first}Proto";
 
+    message ${protobuf.name?cap_first}ListPb {
+        repeated ${protobuf.name?cap_first}Pb ${protobuf.name} = 1;
+    }
 
-message ${protobuf.proName?cap_first}ListPb {
-    repeated ${protobuf.proName?cap_first}Pb ${protobuf.proName} = 1;
-}
-
-
-message ${protobuf.proName?cap_first}Pb {
-    <#list vo.pbInfoList as pb>
-        optional ${pb.type} ${pb.name} = ${item_index + 1};
-    </#list>
-}
+    message ${protobuf.name?cap_first}Pb {
+        <#list protobuf.classColumnList as pb>
+            optional ${pb.type} ${pb.name} = ${pb_index + 1};
+        </#list>
+    }
 
 }
-
-
-
-

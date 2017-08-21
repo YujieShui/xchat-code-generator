@@ -5,7 +5,7 @@ import com.x16.xchat.persist.XcVO;
 * VO 实体类
 * created by shui
 */
-public class ${vo.className} <#if vo.superclass?has_content> extends ${vo.superclass} </#if>{
+public class ${vo.className}VO <#if vo.superclass?has_content> extends ${vo.superclass} </#if>{
 
     <#list vo.classColumnList as column>
     private ${column.type} ${column.name};

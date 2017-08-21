@@ -1,8 +1,8 @@
 package com.shuiyujie.generator.task;
 
 import com.shuiyujie.generator.model.ColumnInfo;
+import com.shuiyujie.generator.model.Protobuf;
 import com.shuiyujie.generator.model.TableInfo;
-import com.shuiyujie.generator.model.VO;
 import com.shuiyujie.generator.utils.Constants;
 import com.shuiyujie.generator.utils.StringUtil;
 import freemarker.template.Configuration;
@@ -16,13 +16,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * created by shui 2017/8/20
+ * created by shui 2017/8/21
  */
-public class VOTask extends InitTask {
+public class PbTask extends InitTask{
 
-    private static String VO_PACKAGE_NAME = "com.x16.xchat.persist.org";
-
-    private static String VO_SUPERCLASS_NAME = "XcVO";
+    private static String PB_PACKAGE_NAME = "com.x16.xchat.protobuf.proto";
 
     public boolean doInternale() throws Exception{
 
@@ -36,15 +34,15 @@ public class VOTask extends InitTask {
             configuration.setObjectWrapper(new DefaultObjectWrapper());
 
             // 指定模板文件
-            Template template = configuration.getTemplate("vo.ftl");
+            Template template = configuration.getTemplate("protobuf.ftl");
 
             // 创建数据模型
             Map<String, Object> root = new HashMap<>();
-            VO vo = this.tableInfo2VO(tableInfo);
-            root.put("vo",vo);
+            Protobuf pb = this.tableInfo2Pb(tableInfo);
+            root.put("protobuf",pb);
 
             Writer out = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream("/Users/shui/workspace/code/User.java"), "utf-8"));
+                    new FileOutputStream("/Users/shui/workspace/code/User.proto"), "utf-8"));
             template.process(root, out);
             out.flush();
             out.close();
@@ -58,22 +56,20 @@ public class VOTask extends InitTask {
         return false;
     }
 
-    private VO tableInfo2VO (TableInfo tableInfo){
+    private Protobuf tableInfo2Pb(TableInfo tableInfo){
 
-        VO vo = new VO();
+        Protobuf pb = new Protobuf();
 
-        vo.setPackageName(VO_PACKAGE_NAME);
-        vo.setClassName(StringUtil.tableName2ClassName(tableInfo.getName()));
-        vo.setSuperclass(VO_SUPERCLASS_NAME);
-        List<ColumnInfo> classColumns= (List<ColumnInfo>) contexts.get("classColumns");
-        vo.setClassColumnList(classColumns);
+        pb.setPackageName(PB_PACKAGE_NAME);
+        pb.setName(StringUtil.dbColumn2ClassColumn(tableInfo.getName()));
+        List<ColumnInfo> pbColumns= (List<ColumnInfo>) contexts.get("pbColumns");
+        pb.setClassColumnList(pbColumns);
 
-        return vo;
+        return pb;
 
     }
 
-    public static void main(String[] args) throws Exception {
-
-        new VOTask().doInternale();
+    public static void main(String[] args) throws Exception{
+        new PbTask().doInternale();
     }
 }

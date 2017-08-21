@@ -8,7 +8,8 @@ import java.util.List;
  */
 public class TableInfo {
 
-    private String name;
+    private String packageName;// 包名
+    private String name;// 数据库中表名
     private String type;
     private String remark;
     private List<ColumnInfo> dbColumnList;
@@ -54,10 +55,19 @@ public class TableInfo {
         this.classColumnList = classColumnList;
     }
 
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
+
     @Override
     public String toString() {
         return "TableInfo{" +
-                "name='" + name + '\'' +
+                "packageName='" + packageName + '\'' +
+                ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
                 ", remark='" + remark + '\'' +
                 ", dbColumnList=" + dbColumnList +

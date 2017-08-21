@@ -1,6 +1,5 @@
 package com.shuiyujie.generator.utils;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -124,6 +123,21 @@ public class StringUtil {
             return "Long";
         } else {
             return type;
+        }
+
+    }
+
+    /**
+     * 数据库类型转换成 pb 类型
+     * @param type
+     * @return
+     */
+    public static String typeTransfer4Pb(String type) {
+
+        if(type.equals("varchar")){
+            return "string";
+        }else {
+            return "int64";
         }
 
     }
