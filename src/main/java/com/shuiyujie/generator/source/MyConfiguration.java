@@ -1,7 +1,6 @@
 package com.shuiyujie.generator.source;
 
 import com.shuiyujie.generator.utils.PropertyUtil;
-import org.dom4j.Document;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -42,8 +41,7 @@ public class Configuration {
      * @param name
      * @return
      */
-    public static String getString(String name)
-    {
+    public static String getString(String name) {
         String value = (String) items.get(name);
         return (value == null) ? "" : value;
     }
