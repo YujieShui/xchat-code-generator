@@ -44,7 +44,6 @@ public class InitTask extends ApplicationTask{
             DatabaseMetaData dbMetaData = conn.getMetaData();
 
             // 获取数据库表结果集
-//            tableSet = dbMetaData.getTables(null, "user", Constants.ENTITY_SUFFIX, new String[]{"TABLE"});
             tableSet = dbMetaData.getTables(null, null,"%", null);
 
             // 遍历

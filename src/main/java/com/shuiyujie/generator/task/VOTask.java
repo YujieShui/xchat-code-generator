@@ -20,15 +20,15 @@ import java.util.Map;
  */
 public class VOTask extends InitTask {
 
-    private static String VO_PACKAGE_NAME = "com.x16.xchat.persist.org";
+    private static String PACKAGE_NAME = "com.x16.xchat.persist";
 
-    private static String VO_SUPERCLASS_NAME = "XcVO";
+    private static String SUPERCLASS_NAME = "XcVO";
 
     private static String TASK_FTL_NAME = "vo.ftl";
 
-    public boolean doInternale() throws Exception{
+    private static String FILE_PATH = "/Users/shui/workspace/code/UserVO.java";
 
-        TableInfo tableInfo = (TableInfo) contexts.get("tableInfo");
+    public boolean doInternale() throws Exception{
 
         Configuration configuration = new Configuration();
 
@@ -42,11 +42,11 @@ public class VOTask extends InitTask {
 
             // 创建数据模型
             Map<String, Object> root = new HashMap<>();
-            VO vo = this.tableInfo2VO(tableInfo);
+            VO vo = this.getInstance();
             root.put("vo",vo);
 
             Writer out = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream("/Users/shui/workspace/code/UserVO.java"), "utf-8"));
+                    new FileOutputStream(FILE_PATH), "utf-8"));
             template.process(root, out);
             out.flush();
             out.close();
@@ -60,13 +60,15 @@ public class VOTask extends InitTask {
         return false;
     }
 
-    private VO tableInfo2VO (TableInfo tableInfo){
+    private VO getInstance (){
+
+        TableInfo tableInfo = (TableInfo) contexts.get("tableInfo");
 
         VO vo = new VO();
 
-        vo.setPackageName(VO_PACKAGE_NAME);
+        vo.setPackageName(PACKAGE_NAME);
         vo.setClassName(StringUtil.tableName2ClassName(tableInfo.getName()));
-        vo.setSuperclass(VO_SUPERCLASS_NAME);
+        vo.setSuperclass(SUPERCLASS_NAME);
         List<ColumnInfo> classColumns= (List<ColumnInfo>) contexts.get("classColumns");
         vo.setClassColumnList(classColumns);
 

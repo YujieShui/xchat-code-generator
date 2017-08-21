@@ -1,8 +1,6 @@
 package com.shuiyujie.generator.task;
 
-import com.shuiyujie.generator.model.ColumnInfo;
 import com.shuiyujie.generator.model.IDaoModel;
-import com.shuiyujie.generator.model.Mapper;
 import com.shuiyujie.generator.model.TableInfo;
 import com.shuiyujie.generator.utils.Constants;
 import com.shuiyujie.generator.utils.StringUtil;
@@ -13,7 +11,6 @@ import freemarker.template.TemplateException;
 
 import java.io.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

@@ -1,5 +1,7 @@
 package com.shuiyujie.generator.utils;
 
+import com.shuiyujie.generator.source.Configuration;
+
 import java.sql.*;
 
 /**
@@ -8,11 +10,9 @@ import java.sql.*;
  */
 public class DBUtil {
 
-
     static {
         try {
-            String driverName = "com.mysql.jdbc.Driver";
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(Configuration.getString("driverClassName"));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -23,19 +23,16 @@ public class DBUtil {
      * @return
      */
     public static Connection getConnection(){
-
         Connection conn = null;
         try {
-            String jdbcUrl = "jdbc:mysql://localhost:3306/test";
-            String userName = "root";
-            String password = "root";
+            String jdbcUrl = Configuration.getString("url");
+            String userName = Configuration.getString("username");
+            String password = Configuration.getString("password");
             conn = DriverManager.getConnection(jdbcUrl, userName, password);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return conn;
-
     }
 
     /**
