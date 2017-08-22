@@ -24,11 +24,11 @@ public class VOTask extends InitTask {
 
     private static String PACKAGE_NAME = MyConfiguration.getString("voPackage");
 
+    private static String FILE_PATH = MyConfiguration.getString("voSavePath");
+
     private static String SUPERCLASS_NAME = "XcVO";
 
     private static String TASK_FTL_NAME = "vo.ftl";
-
-    private static String FILE_PATH = MyConfiguration.getString("voSavePath");
 
     public boolean doInternale() throws Exception {
 
@@ -40,10 +40,12 @@ public class VOTask extends InitTask {
         VO vo = this.getInstance();
         root.put("vo", vo);
 
-        FileUtil.createNewFile(FILE_PATH,FILE_PATH+"/UserVO.java");
+        String filePathName = FILE_PATH + "/" + className + "VO.java";
+
+        FileUtil.createNewFile(FILE_PATH,filePathName);
 
         Writer out = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(FILE_PATH + "/UserVO.java"), "utf-8"));
+                new FileOutputStream(filePathName), "utf-8"));
         template.process(root, out);
         out.flush();
         out.close();
@@ -93,7 +95,6 @@ public class VOTask extends InitTask {
 
         return xcVOColumns;
     }
-
 
     public static void main(String[] args) throws Exception {
 

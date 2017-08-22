@@ -18,27 +18,25 @@ import java.util.Map;
  */
 public class DaoTask extends InitTask {
 
+    private static String TASK_FTL_NAME = "mapper.ftl";
+
     private String FTL_NAME = "iservice.ftl";
 
     private String PACKAGE_NAME = "com.x16.xchat.app.service";
 
     public boolean doInternale() throws Exception {
 
-
-        Configuration configuration = new Configuration();
-
         try {
-            // 指定数据源
-            configuration.setDirectoryForTemplateLoading(new File(Constants.TEMPLATE_PATH));
-            configuration.setObjectWrapper(new DefaultObjectWrapper());
-
             // 指定模板文件
-            Template template = configuration.getTemplate(FTL_NAME);
+            Template template = super.configuration.getTemplate(TASK_FTL_NAME);
 
             // 创建数据模型
             Map<String, Object> root = new HashMap<>();
             IDaoModel model = this.getInstance();
             root.put("idao", model);
+
+            String filePathName = FILE_PATH + "/" +className + ".xml";
+
             Writer out = new BufferedWriter(new OutputStreamWriter(
                     new FileOutputStream("/Users/shui/workspace/code/IUserService.java"), "utf-8"));
             template.process(root, out);

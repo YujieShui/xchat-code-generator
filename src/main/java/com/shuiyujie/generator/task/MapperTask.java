@@ -4,7 +4,9 @@ import com.shuiyujie.generator.model.ColumnInfo;
 import com.shuiyujie.generator.model.Mapper;
 import com.shuiyujie.generator.model.TableInfo;
 import com.shuiyujie.generator.model.VO;
+import com.shuiyujie.generator.source.MyConfiguration;
 import com.shuiyujie.generator.utils.Constants;
+import com.shuiyujie.generator.utils.FileUtil;
 import com.shuiyujie.generator.utils.StringUtil;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
@@ -23,27 +25,27 @@ public class MapperTask extends InitTask {
 
     private static String TASK_FTL_NAME = "mapper.ftl";
 
+    private static String FILE_PATH = MyConfiguration.getString("mapperXmlSavePath");
+
     public boolean doInternale() throws Exception {
 
-
-        Configuration configuration = new Configuration();
-
         try {
-            // 指定数据源
-            configuration.setDirectoryForTemplateLoading(new File(Constants.TEMPLATE_PATH));
-            configuration.setObjectWrapper(new DefaultObjectWrapper());
 
             // 指定模板文件
-            Template template = configuration.getTemplate(TASK_FTL_NAME);
+            Template template = super.configuration.getTemplate(TASK_FTL_NAME);
 
             // 创建数据模型
             Map<String, Object> root = new HashMap<>();
-            Mapper mapper = this.getMapper();
+            Mapper mapper = this.getInstance();
             root.put("mapper", mapper);
             root.put("resultMap",mapper.getResultMap());
 
+            String filePathName = FILE_PATH + "/" +className + ".xml";
+
+            FileUtil.createNewFile(FILE_PATH,filePathName);
+
             Writer out = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream("/Users/shui/workspace/code/User.xml"), "utf-8"));
+                    new FileOutputStream(filePathName), "utf-8"));
             template.process(root, out);
             out.flush();
             out.close();
@@ -57,7 +59,7 @@ public class MapperTask extends InitTask {
         return false;
     }
 
-    private Mapper getMapper() {
+    private Mapper getInstance() {
 
         TableInfo tableInfo = (TableInfo) contexts.get("tableInfo");
         List<ColumnInfo> classColumns = (List<ColumnInfo>) contexts.get("classColumns");

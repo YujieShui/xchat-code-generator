@@ -2,6 +2,8 @@ package com.shuiyujie.generator.task;
 
 import com.shuiyujie.generator.model.IDaoModel;
 import com.shuiyujie.generator.model.TableInfo;
+import com.shuiyujie.generator.model.VO;
+import com.shuiyujie.generator.source.MyConfiguration;
 import com.shuiyujie.generator.utils.Constants;
 import com.shuiyujie.generator.utils.StringUtil;
 import freemarker.template.Configuration;
@@ -18,9 +20,11 @@ import java.util.Map;
  */
 public class IDaoTask extends InitTask {
 
-    private String FTL_NAME = "iservice.ftl";
+    private static String PACKAGE_NAME = MyConfiguration.getString("serviceInterfacePackage");
 
-    private String PACKAGE_NAME = "com.x16.xchat.app.service";
+    private static String FILE_PATH = MyConfiguration.getString("serviceInterfaceSavePath");
+
+    private String FTL_NAME = "iservice.ftl";
 
     public boolean doInternale() throws Exception {
 
@@ -39,8 +43,11 @@ public class IDaoTask extends InitTask {
             Map<String, Object> root = new HashMap<>();
             IDaoModel model = this.getInstance();
             root.put("idao", model);
+
+            String filePathName = FILE_PATH + "/" + "I" + className + "Service.java";
+
             Writer out = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream("/Users/shui/workspace/code/IUserService.java"), "utf-8"));
+                    new FileOutputStream(filePathName), "utf-8"));
             template.process(root, out);
             out.flush();
             out.close();

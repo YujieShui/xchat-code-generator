@@ -32,6 +32,8 @@ public class InitTask extends ApplicationTask{
 
     public static Configuration configuration;
 
+    public static String className;
+
     Connection conn = null;
     ResultSet tableSet = null;// 表信息
     ResultSet columnSet = null;// 字段信息
@@ -60,6 +62,7 @@ public class InitTask extends ApplicationTask{
 
                 // 获取表名
                 String tableName = tableSet.getString("TABLE_NAME").toLowerCase();
+                className = StringUtil.tableName2ClassName(tableName);
 
                 TableInfo tableInfo = new TableInfo();
                 tableInfo.setName(tableName);
