@@ -4,15 +4,18 @@ import com.shuiyujie.generator.model.ColumnInfo;
 import com.shuiyujie.generator.model.TableInfo;
 import com.shuiyujie.generator.model.VO;
 import com.shuiyujie.generator.source.MyConfiguration;
-import com.shuiyujie.generator.utils.Constants;
+import com.shuiyujie.generator.utils.FileUtil;
 import com.shuiyujie.generator.utils.StringUtil;
-import freemarker.template.Configuration;
-import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
-import freemarker.template.TemplateException;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * created by shui 2017/8/20
@@ -37,8 +40,10 @@ public class VOTask extends InitTask {
         VO vo = this.getInstance();
         root.put("vo", vo);
 
+        FileUtil.createNewFile(FILE_PATH,FILE_PATH+"/UserVO.java");
+
         Writer out = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(FILE_PATH + "UserVO.java"), "utf-8"));
+                new FileOutputStream(FILE_PATH + "/UserVO.java"), "utf-8"));
         template.process(root, out);
         out.flush();
         out.close();
