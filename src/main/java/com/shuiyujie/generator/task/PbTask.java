@@ -3,7 +3,9 @@ package com.shuiyujie.generator.task;
 import com.shuiyujie.generator.model.ColumnInfo;
 import com.shuiyujie.generator.model.Protobuf;
 import com.shuiyujie.generator.model.TableInfo;
+import com.shuiyujie.generator.source.MyConfiguration;
 import com.shuiyujie.generator.utils.Constants;
+import com.shuiyujie.generator.utils.FileUtil;
 import com.shuiyujie.generator.utils.StringUtil;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
@@ -18,60 +20,54 @@ import java.util.Map;
 /**
  * created by shui 2017/8/21
  */
-public class PbTask extends InitTask{
+public class PbTask extends InitTask {
 
-    private static String PB_PACKAGE_NAME = "com.x16.xchat.protobuf.proto";
+    private static String PACKAGE_NAME = MyConfiguration.getString("pbPackage");
+
+    private static String FILE_PATH = MyConfiguration.getString("pbSavePath");
 
     private static String TASK_FTL_NAME = "protobuf.ftl";
 
-    public boolean doInternale() throws Exception{
+    public boolean doInternale() throws Exception {
 
-        TableInfo tableInfo = (TableInfo) contexts.get("tableInfo");
+        // 指定模板文件
+        Template template = super.configuration.getTemplate(TASK_FTL_NAME);
 
-        Configuration configuration = new Configuration();
+        // 创建数据模型
+        Map<String, Object> root = new HashMap<>();
+        Protobuf pb = this.getInstance();
+        root.put("protobuf", pb);
 
-        try {
-            // 指定数据源
-            configuration.setDirectoryForTemplateLoading(new File(Constants.TEMPLATE_PATH));
-            configuration.setObjectWrapper(new DefaultObjectWrapper());
+        String filePathName = FILE_PATH + "/" + className + ".proto";
 
-            // 指定模板文件
-            Template template = configuration.getTemplate(TASK_FTL_NAME);
+        FileUtil.createNewFile(FILE_PATH, filePathName);
 
-            // 创建数据模型
-            Map<String, Object> root = new HashMap<>();
-            Protobuf pb = this.tableInfo2Pb(tableInfo);
-            root.put("protobuf",pb);
+        Writer out = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(filePathName), "utf-8"));
+        template.process(root, out);
 
-            Writer out = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream("/Users/shui/workspace/code/User.proto"), "utf-8"));
-            template.process(root, out);
-            out.flush();
-            out.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (TemplateException e) {
-            e.printStackTrace();
-        }
+        out.flush();
+        out.close();
 
         return false;
     }
 
-    private Protobuf tableInfo2Pb(TableInfo tableInfo){
+    private Protobuf getInstance() {
+
+        TableInfo tableInfo = (TableInfo) contexts.get("tableInfo");
+        List<ColumnInfo> pbColumns = (List<ColumnInfo>) contexts.get("pbColumns");
 
         Protobuf pb = new Protobuf();
 
-        pb.setPackageName(PB_PACKAGE_NAME);
+        pb.setPackageName(PACKAGE_NAME);
         pb.setName(StringUtil.dbColumn2ClassColumn(tableInfo.getName()));
-        List<ColumnInfo> pbColumns= (List<ColumnInfo>) contexts.get("pbColumns");
         pb.setClassColumnList(pbColumns);
 
         return pb;
 
     }
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         new PbTask().doInternale();
     }
 }

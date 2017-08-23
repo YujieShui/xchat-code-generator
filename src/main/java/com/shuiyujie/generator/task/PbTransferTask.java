@@ -2,7 +2,9 @@ package com.shuiyujie.generator.task;
 
 import com.shuiyujie.generator.model.ColumnInfo;
 import com.shuiyujie.generator.model.TableInfo;
+import com.shuiyujie.generator.source.MyConfiguration;
 import com.shuiyujie.generator.utils.Constants;
+import com.shuiyujie.generator.utils.FileUtil;
 import com.shuiyujie.generator.utils.StringUtil;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
@@ -19,40 +21,31 @@ import java.util.Map;
  */
 public class PbTransferTask extends InitTask {
 
-    private String FTL_NAME = "pbtransfer.ftl";
+    private static String FILE_PATH = MyConfiguration.getString("pbTransferSavePath");
 
-    private String PACKAGE_NAME = "com.x16.xchat.app.service";
+    private String TASK_FTL_NAME = "pbtransfer.ftl";
 
     public boolean doInternale() throws Exception {
 
+        // 指定模板文件
+        Template template = super.configuration.getTemplate(TASK_FTL_NAME);
 
-        Configuration configuration = new Configuration();
+        // 创建数据模型
+        TableInfo tableInfo = (TableInfo) contexts.get("tableInfo");
+        Map<String, Object> root = new HashMap<>();
+        List<ColumnInfo> classColumnInfos = this.getInstance();
+        root.put("columnList", classColumnInfos);
+        root.put("paramName", tableInfo.getName().toUpperCase() + "_FIELDS");
 
-        try {
-            // 指定数据源
-            configuration.setDirectoryForTemplateLoading(new File(Constants.TEMPLATE_PATH));
-            configuration.setObjectWrapper(new DefaultObjectWrapper());
+        String filePathName = FILE_PATH + "/" + "PbTransfer.java";
 
-            // 指定模板文件
-            Template template = configuration.getTemplate(FTL_NAME);
+        FileUtil.createNewFile(FILE_PATH,filePathName);
 
-            // 创建数据模型
-            TableInfo tableInfo = (TableInfo) contexts.get("tableInfo");
-            Map<String, Object> root = new HashMap<>();
-            List<ColumnInfo> classColumnInfos = this.getInstance();
-            root.put("columnList", classColumnInfos);
-            root.put("paramName",tableInfo.getName().toUpperCase() + "_FIELDS");
-            Writer out = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream("/Users/shui/workspace/code/PbTransfer.java"), "utf-8"));
-            template.process(root, out);
-            out.flush();
-            out.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (TemplateException e) {
-            e.printStackTrace();
-        }
+        Writer out = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(filePathName), "utf-8"));
+        template.process(root, out);
+        out.flush();
+        out.close();
 
         return false;
     }

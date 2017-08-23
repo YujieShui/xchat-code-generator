@@ -29,32 +29,24 @@ public class MapperTask extends InitTask {
 
     public boolean doInternale() throws Exception {
 
-        try {
+        // 指定模板文件
+        Template template = super.configuration.getTemplate(TASK_FTL_NAME);
 
-            // 指定模板文件
-            Template template = super.configuration.getTemplate(TASK_FTL_NAME);
+        // 创建数据模型
+        Map<String, Object> root = new HashMap<>();
+        Mapper mapper = this.getInstance();
+        root.put("mapper", mapper);
+        root.put("resultMap", mapper.getResultMap());
 
-            // 创建数据模型
-            Map<String, Object> root = new HashMap<>();
-            Mapper mapper = this.getInstance();
-            root.put("mapper", mapper);
-            root.put("resultMap",mapper.getResultMap());
+        String filePathName = FILE_PATH + "/" + className + ".xml";
 
-            String filePathName = FILE_PATH + "/" +className + ".xml";
+        FileUtil.createNewFile(FILE_PATH, filePathName);
 
-            FileUtil.createNewFile(FILE_PATH,filePathName);
-
-            Writer out = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream(filePathName), "utf-8"));
-            template.process(root, out);
-            out.flush();
-            out.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (TemplateException e) {
-            e.printStackTrace();
-        }
+        Writer out = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(filePathName), "utf-8"));
+        template.process(root, out);
+        out.flush();
+        out.close();
 
         return false;
     }
@@ -98,7 +90,7 @@ public class MapperTask extends InitTask {
         return resultMap;
     }
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         new MapperTask().doInternale();
     }
 }

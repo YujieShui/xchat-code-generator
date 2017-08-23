@@ -2,8 +2,7 @@ package com.shuiyujie.generator.utils;
 
 import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * created by shui 2017/8/20
@@ -94,4 +93,5 @@ public class FileUtil {
             return false;
         }
     }
+
 }

@@ -88,10 +88,6 @@ public class InitTask extends ApplicationTask{
                     ci.setType(columnType);
                     ci.setRemark(columnRemark);
 
-                    System.out.println(ci.getName());
-                    System.out.println(ci.getType());
-                    System.out.println(ci.getRemark());
-
                     columnInfos.add(ci);
                 }
                 tableInfo.setDbColumnList(columnInfos);

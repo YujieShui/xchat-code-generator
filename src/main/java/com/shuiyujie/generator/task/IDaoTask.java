@@ -5,6 +5,7 @@ import com.shuiyujie.generator.model.TableInfo;
 import com.shuiyujie.generator.model.VO;
 import com.shuiyujie.generator.source.MyConfiguration;
 import com.shuiyujie.generator.utils.Constants;
+import com.shuiyujie.generator.utils.FileUtil;
 import com.shuiyujie.generator.utils.StringUtil;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
@@ -24,39 +25,27 @@ public class IDaoTask extends InitTask {
 
     private static String FILE_PATH = MyConfiguration.getString("serviceInterfaceSavePath");
 
-    private String FTL_NAME = "iservice.ftl";
+    private String TASK_FTL_NAME = "iservice.ftl";
 
     public boolean doInternale() throws Exception {
 
+        // 指定模板文件
+        Template template = super.configuration.getTemplate(TASK_FTL_NAME);
 
-        Configuration configuration = new Configuration();
+        // 创建数据模型
+        Map<String, Object> root = new HashMap<>();
+        IDaoModel model = this.getInstance();
+        root.put("idao", model);
 
-        try {
-            // 指定数据源
-            configuration.setDirectoryForTemplateLoading(new File(Constants.TEMPLATE_PATH));
-            configuration.setObjectWrapper(new DefaultObjectWrapper());
+        String filePathName = FILE_PATH + "/" + "I" + className + "Service.java";
 
-            // 指定模板文件
-            Template template = configuration.getTemplate(FTL_NAME);
+        FileUtil.createNewFile(FILE_PATH,filePathName);
 
-            // 创建数据模型
-            Map<String, Object> root = new HashMap<>();
-            IDaoModel model = this.getInstance();
-            root.put("idao", model);
-
-            String filePathName = FILE_PATH + "/" + "I" + className + "Service.java";
-
-            Writer out = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream(filePathName), "utf-8"));
-            template.process(root, out);
-            out.flush();
-            out.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (TemplateException e) {
-            e.printStackTrace();
-        }
+        Writer out = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(filePathName), "utf-8"));
+        template.process(root, out);
+        out.flush();
+        out.close();
 
         return false;
     }
