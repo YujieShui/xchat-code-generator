@@ -16,25 +16,25 @@
         <where>
         <#list resultMap?keys as itemKey>
             <if test="${itemKey}!=null">
-                and ${resultMap[itemKey]} = ${itemKey}
+                and ${resultMap[itemKey]} = ${r'#{'} ${itemKey} }
             </if>
         </#list>
         </where>
     </select>
 
     <!-- 单个插入 -->
-    <insert id="insert${mapper.namespace}" parameterType="${mapper.name}VO">
+    <insert id="insert${mapper.namespace}" parameterType="${mapper.name}VO"
+            useGeneratedKeys="true" keyProperty="id">
         INSERT INTO ${mapper.tableName} (
         <#list mapper.dbColumnList as dbColumn>
             <#if (dbColumn_has_next)>${dbColumn.name},
             <#else>${dbColumn.name}
             </#if>
         </#list>
-        )
-        VALUES(
+        )VALUES(
         <#list mapper.classColumnList as classColumn>
-            <#if (classColumn_has_next)>${classColumn.name},
-            <#else>${classColumn.name}
+            <#if (classColumn_has_next)>${r'#{'} ${classColumn.name} },
+            <#else>${r'#{'} ${classColumn.name} }
             </#if>
         </#list>
         )
@@ -46,7 +46,7 @@
         <set>
             <#list resultMap?keys as itemKey>
                 <if test="${itemKey}!=null">
-                ${resultMap[itemKey]}= ${itemKey},
+                <itemKey_has_next>${resultMap[itemKey]}= ${r'#{'} ${itemKey} },
                 </if>
             </#list>
         </set>
@@ -55,14 +55,16 @@
 
     <!-- 删除 -->
     <update id="delete${mapper.namespace}" parameterType="${mapper.name}VO" >
-        update ${mapper.tableName}
-        set
-        data_status=0,
-        sync_key=${r'#{syncKey}'},
-        modified_by = ${r'#{modifiedBy}'},
-        modified_date = ${r'#{modifiedDate}'}
-        where
-        id = ${r'#{id}'}
+        UPDATE ${mapper.tableName}
+        <set>
+        <#list resultMap?keys as itemKey>
+            <if test="${itemKey}!=null">
+                <#if itemKey_has_next>${resultMap[itemKey]}= ${r'#{'} ${itemKey} },
+                <#else>${resultMap[itemKey]}= ${r'#{'} ${itemKey} }
+                </#if></if>
+        </#list>
+        </set>
+        where id=${r'#{id}'}
     </update>
 
 </mapper>

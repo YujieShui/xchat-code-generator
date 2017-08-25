@@ -17,8 +17,8 @@ public class ${vo.className}VO <#if vo.superclass?has_content> extends ${vo.supe
         return ${column.name};
     }
 
-    public void set ${column.name?cap_first}(${column.type} ${column.name?cap_first}()){
-        this.${column.name?cap_first} = ${column.name?cap_first};
+    public void set${column.name?cap_first}(${column.type} ${column.name?cap_first}()){
+        this.${column.name} = ${column.name};
     }
 
     </#list>

@@ -67,7 +67,29 @@ public class PbTask extends InitTask {
 
     }
 
+    // protoc cmtComment.proto --java_out="/Users/shui/company/xchat-core/source/xchat-protobuf/src/main/java/com/x16/xchat/protobuf/proto/org"
+    private void createPbProto() {
+        String shpath = FILE_PATH;   //程序路径
+
+        Process process = null;
+
+        try {
+            String command1 = "cd" + " " + FILE_PATH;
+            process = Runtime.getRuntime().exec(command1);
+            process.waitFor();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public static void main(String[] args) throws Exception {
-        new PbTask().doInternale();
+//        new PbTask().doInternale();
+//        String command = "protoc" + " " + className + ".proto"+ " " + "--java_out=" + "\"" + FILE_PATH + "\"";
+//        System.out.println(command);
+        new PbTask().createPbProto();
     }
 }

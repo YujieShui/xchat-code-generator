@@ -1,5 +1,8 @@
 package ${idao.packageName};
 
+import java.util.List;
+import java.util.Map;
+
 public interface I${idao.className}Service{
 
     void insert${idao.className}(${idao.className}VO vo);
