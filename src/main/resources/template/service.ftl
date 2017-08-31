@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class ${idao.className}Service implements I${idao.className} {
+public class ${idao.className}Service implements I${idao.className}Service {
 
     @Override
     public void insert${idao.className}(${idao.className}VO vo){

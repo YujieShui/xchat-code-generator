@@ -4,13 +4,9 @@ import com.shuiyujie.generator.model.ColumnInfo;
 import com.shuiyujie.generator.model.Protobuf;
 import com.shuiyujie.generator.model.TableInfo;
 import com.shuiyujie.generator.source.MyConfiguration;
-import com.shuiyujie.generator.utils.Constants;
 import com.shuiyujie.generator.utils.FileUtil;
 import com.shuiyujie.generator.utils.StringUtil;
-import freemarker.template.Configuration;
-import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
-import freemarker.template.TemplateException;
 
 import java.io.*;
 import java.util.HashMap;
@@ -21,6 +17,8 @@ import java.util.Map;
  * created by shui 2017/8/21
  */
 public class PbTask extends InitTask {
+
+    Map<String,Object> params = new HashMap<>();
 
     private static String PACKAGE_NAME = MyConfiguration.getString("pbPackage");
 
@@ -77,6 +75,7 @@ public class PbTask extends InitTask {
             String command1 = "cd" + " " + FILE_PATH;
             process = Runtime.getRuntime().exec(command1);
             process.waitFor();
+
 
         } catch (IOException e) {
             e.printStackTrace();

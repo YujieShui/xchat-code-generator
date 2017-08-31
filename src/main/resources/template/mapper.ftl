@@ -46,7 +46,7 @@
         <set>
             <#list resultMap?keys as itemKey>
                 <if test="${itemKey}!=null">
-                <itemKey_has_next>${resultMap[itemKey]}= ${r'#{'} ${itemKey} },
+                ${resultMap[itemKey]}= ${r'#{'} ${itemKey} },
                 </if>
             </#list>
         </set>
