@@ -1,8 +1,6 @@
 package com.shuiyujie.generator.task;
 
 
-import com.shuiyujie.generator.application.ApplicationContext;
-import com.shuiyujie.generator.application.ApplicationTask;
 import com.shuiyujie.generator.model.ColumnInfo;
 import com.shuiyujie.generator.model.TableInfo;
 import com.shuiyujie.generator.utils.Constants;
@@ -26,7 +24,7 @@ import static com.shuiyujie.generator.utils.DBUtil.getConnection;
 /**
  * created by shui 2017/8/19
  */
-public class InitTask extends ApplicationTask{
+public class InitTask{
 
     Map<String,Object> contexts = new HashMap<>();
 
