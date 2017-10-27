@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class PbTask extends InitTask {
 
-    Map<String,Object> params = new HashMap<>();
+    Map<String, Object> params = new HashMap<>();
 
     private static String PACKAGE_NAME = MyConfiguration.getString("pbPackage");
 
@@ -29,7 +29,7 @@ public class PbTask extends InitTask {
     public boolean doInternale() throws Exception {
 
         // 指定模板文件
-        Template template = super.configuration.getTemplate(TASK_FTL_NAME);
+        Template template = InitTask.configuration.getTemplate(TASK_FTL_NAME);
 
         // 创建数据模型
         Map<String, Object> root = new HashMap<>();
@@ -46,6 +46,8 @@ public class PbTask extends InitTask {
 
         out.flush();
         out.close();
+
+        this.createPbProto(className + ".proto");
 
         return false;
     }
@@ -65,30 +67,48 @@ public class PbTask extends InitTask {
 
     }
 
-    // protoc cmtComment.proto --java_out="/Users/shui/company/xchat-core/source/xchat-protobuf/src/main/java/com/x16/xchat/protobuf/proto/org"
-    private void createPbProto() {
-        String shpath = FILE_PATH;   //程序路径
+    /**
+     * 生成一个 shell 文件
+     * 通过 shell 文件编译生成 ProtoBuf 文件
+     *
+     * @param fileName
+     */
+    private void createPbProto(String fileName) {
 
-        Process process = null;
+        String shell = "#!/bin/bash\n";
 
-        try {
-            String command1 = "cd" + " " + FILE_PATH;
-            process = Runtime.getRuntime().exec(command1);
-            process.waitFor();
+        String one = "cd " + FILE_PATH + "\n";
 
+        String two = "protoc " + fileName + " --java_out=\"" + FILE_PATH + "\"\n";
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        shell += one;
+        shell += two;
+
+        String filePath = FILE_PATH + "/test.sh";
+        FileUtil.writeToFile(filePath,shell,"UTF-8");
+        System.out.println(filePath);
+
+        // 创建 shell 脚本文件
+        if(FileUtil.writeToFile(filePath,shell,"UTF-8")){
+            // 执行 shell 文件
+            Runtime runTime = Runtime.getRuntime();
+            String cmd = "bash " + filePath;
+
+            try {
+                Process process = runTime.exec(cmd);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
 
     }
 
     public static void main(String[] args) throws Exception {
-//        new PbTask().doInternale();
+        new PbTask().doInternale();
+//        new PbTask().createPbProto();
 //        String command = "protoc" + " " + className + ".proto"+ " " + "--java_out=" + "\"" + FILE_PATH + "\"";
 //        System.out.println(command);
-        new PbTask().createPbProto();
+//        new PbTask().createPbProto();
     }
 }
