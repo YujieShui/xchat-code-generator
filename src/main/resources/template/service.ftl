@@ -11,18 +11,18 @@ import java.util.Map;
 public class ${idao.className}Service implements I${idao.className}Service {
 
     @Override
-    public void insert${idao.className}(${idao.className}VO vo){
-        daoRouter.insert("${idao.className}.insert${idao.className}", vo);
+    public void insert${idao.className}(${idao.className}VO ${idao.className?uncap_first}VO){
+        daoRouter.insert("${idao.className}.insert${idao.className}", ${idao.className?uncap_first}VO);
     }
 
     @Override
-    public void update${idao.className}(${idao.className}VO vo){
-        daoRouter.update("${idao.className}.${idao.className}", vo);
+    public void update${idao.className}(${idao.className}VO ${idao.className?uncap_first}VO){
+        daoRouter.update("${idao.className}.update${idao.className}", ${idao.className?uncap_first}VO);
     }
 
     @Override
-    public void delete${idao.className}(${idao.className}VO vo){
-        daoRouter.update("${idao.className}.delete${idao.className}", vo);
+    public void delete${idao.className}(${idao.className}VO ${idao.className?uncap_first}VO){
+        daoRouter.update("${idao.className}.delete${idao.className}", ${idao.className?uncap_first}VO);
     }
 
     @Override

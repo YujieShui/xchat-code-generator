@@ -26,7 +26,7 @@ public class VOTask extends InitTask {
 
     private static String FILE_PATH = MyConfiguration.getString("voSavePath");
 
-    private static String SUPERCLASS_NAME = "XcVO";
+    private static String SUPERCLASS_NAME = "FuVO";
 
     private static String TASK_FTL_NAME = "vo.ftl";
 

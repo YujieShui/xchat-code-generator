@@ -1,6 +1,5 @@
 package ${vo.packageName};
 
-import com.x16.xchat.persist.XcVO;
 /**
 * VO 实体类
 * created by shui
@@ -17,7 +16,7 @@ public class ${vo.className}VO <#if vo.superclass?has_content> extends ${vo.supe
         return ${column.name};
     }
 
-    public void set${column.name?cap_first}(${column.type} ${column.name?cap_first}){
+    public void set${column.name?cap_first}(${column.type} ${column.name}){
         this.${column.name} = ${column.name};
     }
 

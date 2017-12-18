@@ -8,12 +8,12 @@ import com.shuiyujie.generator.task.*;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        //
+
         new VOTask().doInternale();
         new DaoTask().doInternale();
         new IDaoTask().doInternale();
         new MapperTask().doInternale();
-        new PbTask().doInternale();
-        new PbTransferTask().doInternale();
+//        new PbTask().doInternale();
+//        new PbTransferTask().doInternale();
     }
 }
